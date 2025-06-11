@@ -5,7 +5,7 @@ import { useProduits } from '@/hooks/useProduits';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material';
+import Container from '@mui/material/Container';
 import ProduitCard from '@/components/ProduitCard';
 import CircularProgress from '@mui/material/CircularProgress';
 
