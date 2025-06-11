@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SERVICE_URL = process.env.PRODUIT_SERVICE_URL;
+const SERVICE_URL = process.env.NEXT_PUBLIC_API_PRODUITS;
 
 export async function POST(req: NextRequest) {
   try {

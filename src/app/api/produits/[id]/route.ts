@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SERVICE_URL = process.env.PRODUIT_SERVICE_URL;
+const SERVICE_URL = process.env.NEXT_PUBLIC_API_PRODUITS;
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authHeader = req.headers.get('authorization') || '';
-    const { id } = params;
-
-    const res = await fetch(`${SERVICE_URL}/afficher/${id}`, {
+    const { id } = await params;
+    const res = await fetch(`${SERVICE_URL}/api/produits/afficher/${id}`, {
       headers: { Authorization: authHeader }
     });
-
     if (!res.ok) {
       const text = await res.text();
       return NextResponse.json({ success: false, message: text }, { status: res.status });

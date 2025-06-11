@@ -2,23 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SERVICE_URL = process.env.NEXT_PUBLIC_API_PRODUITS;
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const id = params.id;
-
     const authHeader = req.headers.get('authorization') || '';
-    const body = await req.json();
 
-    const res = await fetch(`${SERVICE_URL}/api/produits/modifier/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: authHeader
-      },
-      body: JSON.stringify(body)
+    const res = await fetch(`${SERVICE_URL}/api/commandes/afficherAll`, {
+      headers: { Authorization: authHeader }
     });
 
     if (!res.ok) {
@@ -28,7 +17,7 @@ export async function PUT(
 
     const data = await res.json();
 
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Erreur interne', error: (error as Error).message }, { status: 500 });
   }
