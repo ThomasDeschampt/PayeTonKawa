@@ -23,7 +23,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Barre supérieure avec liens utilitaires */}
       <Box
         sx={{
           backgroundColor: '#2E2E2E',
@@ -64,7 +63,6 @@ export default function Header() {
         </Container>
       </Box>
 
-      {/* Header principal */}
       <AppBar
         position="static"
         elevation={0}
@@ -83,12 +81,11 @@ export default function Header() {
               px: { xs: 2, sm: 0 }
             }}
           >
-            {/* Logo à gauche */}
+
             <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
               <Box component="img" src={logo} alt="Logo Paye Ton Kawa" sx={{ height: 60, width: 'auto' }} />
             </Link>
 
-            {/* Titre centré */}
             <Box sx={{ textAlign: 'center', flex: 1, pointerEvents: 'none' }}>
               <Typography
                 variant="h5"
@@ -115,7 +112,6 @@ export default function Header() {
               </Typography>
             </Box>
 
-            {/* Icônes à droite */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Link href="/panier" passHref>
                 <IconButton
