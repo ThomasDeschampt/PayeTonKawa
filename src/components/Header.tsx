@@ -43,10 +43,6 @@ export default function Header() {
             }}
           >
             <Box sx={{ display: 'flex', gap: 3 }}>
-              <Link href="/boutiques" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <StoreIcon sx={{ fontSize: 16 }} />
-                NOS BOUTIQUES
-              </Link>
               <Link href="/conseils" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px'}}>
                 <InfoIcon sx={{ fontSize: 16 }} />
                 NOS CONSEILS

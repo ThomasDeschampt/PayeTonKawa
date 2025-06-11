@@ -76,12 +76,6 @@ export default function Footer() {
                 Navigation
               </Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Link href="/boutiques" style={{ color: '#CCCCCC', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <StoreIcon sx={{ fontSize: 16 }} />
-                  <Typography sx={{ fontSize: '0.9rem', '&:hover': { color: '#D4AF37' } }}>
-                    Nos boutiques
-                  </Typography>
-                </Link>
                 <Link href="/conseils" style={{ color: '#CCCCCC', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <InfoIcon sx={{ fontSize: 16 }} />
                   <Typography sx={{ fontSize: '0.9rem', '&:hover': { color: '#D4AF37' } }}>
@@ -129,11 +123,6 @@ export default function Footer() {
                   <SecurityIcon sx={{ fontSize: 16 }} />
                   <Typography sx={{ fontSize: '0.9rem', '&:hover': { color: '#D4AF37' } }}>
                     Confidentialité
-                  </Typography>
-                </Link>
-                <Link href="/cookies" style={{ color: '#CCCCCC', textDecoration: 'none' }}>
-                  <Typography sx={{ fontSize: '0.9rem', '&:hover': { color: '#D4AF37' } }}>
-                    Cookies
                   </Typography>
                 </Link>
               </Box>
