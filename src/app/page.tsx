@@ -13,7 +13,7 @@ export default function ProduitsPage() {
   const { produits, loading } = useProduits();
 
   return (
-    <Box sx={{ p: { xs: 2, md: 6 }, maxWidth: 1400, mx: 'auto' }}>
+    <Box sx={{ p: { xs: 2, md: 6 }, mx: 'auto' }}>
 <Box
         sx={{
           backgroundColor: '#F8F8F8',
