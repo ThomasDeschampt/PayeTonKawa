@@ -35,7 +35,6 @@ export default function PanierPage() {
         <Paper elevation={3} sx={{ p: 4 }}>
           <List>
             {panier.map((produit) => {
-                console.log('lalalalalalalla',produit)
               const imgSrc = produit.photo_url?.trim() ? produit.photo_url : DEFAULT_IMAGE;
               return (
                 <Box key={produit.id} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

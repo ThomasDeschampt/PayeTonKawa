@@ -1,20 +1,22 @@
 'use client';
 
-import Link from 'next/link';
+import React from 'react';
 import { useProduits } from '@/hooks/useProduits';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import ProduitCard from '@/components/ProduitCard';
 import CircularProgress from '@mui/material/CircularProgress';
+import ProduitCard from '@/components/ProduitCard';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ProduitsPage() {
   const { produits, loading } = useProduits();
+  const { user } = useAuth();
+  console.log('userrrrrrr',user)
 
   return (
     <Box sx={{ p: { xs: 2, md: 6 }, mx: 'auto' }}>
-<Box
+      <Box
         sx={{
           backgroundColor: '#F8F8F8',
           borderBottom: '1px solid #E0E0E0',
@@ -64,13 +66,17 @@ export default function ProduitsPage() {
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={4}>
+        <Box sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+          gap: '16px',
+        }}>
           {produits.map((prod) => (
-            <Grid key={prod.id} item xs={12} sm={6} md={4} lg={3}>
+            <Box key={prod.id}>
               <ProduitCard produit={prod} />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
     </Box>
   );

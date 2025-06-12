@@ -1,13 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import ProduitDetail from '@/components/ProduitDetail';
 
-const DEFAULT_IMAGE = '/test.jpg';
 
 type Produit = {
   id: string;
@@ -21,7 +17,6 @@ type Produit = {
 export default function ProduitDetailPage({ params }: { params: { id: string } }) {
   const [produit, setProduit] = useState<Produit | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   const fetchProduit = async (id: string) => {
     setLoading(true);
@@ -33,7 +28,7 @@ export default function ProduitDetailPage({ params }: { params: { id: string } }
       } else {
         setProduit(null);
       }
-    } catch (e) {
+    } catch {
       setProduit(null);
     } finally {
       setLoading(false);

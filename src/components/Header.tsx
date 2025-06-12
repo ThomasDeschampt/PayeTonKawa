@@ -13,7 +13,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
-import StoreIcon from '@mui/icons-material/Store';
 import Link from 'next/link';
 import { usePanier } from '@/hooks/usePanier';
 

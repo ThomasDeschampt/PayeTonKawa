@@ -1,27 +1,18 @@
-'use client';
-
+import React from 'react';
 import {
   Box,
   Container,
   Typography,
-  Grid,
-  IconButton,
-  Divider
 } from '@mui/material';
 import Link from 'next/link';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import StoreIcon from '@mui/icons-material/Store';
 import InfoIcon from '@mui/icons-material/Info';
 import GavelIcon from '@mui/icons-material/Gavel';
 import SecurityIcon from '@mui/icons-material/Security';
 
 export default function Footer() {
-
   return (
     <Box component="footer" sx={{ mt: 'auto' }}>
       <Box
@@ -33,37 +24,35 @@ export default function Footer() {
         }}
       >
         <Container maxWidth="xl">
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={4}>
-              <Box sx={{ mb: 3 }}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontFamily: 'Playfair Display, serif',
-                    fontSize: '1.2rem',
-                    color: '#D4AF37',
-                    letterSpacing: '0.1em',
-                    mb: 2
-                  }}
-                >
-                  PAYE TON KAWA
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: '0.9rem',
-                    lineHeight: 1.6,
-                    color: '#CCCCCC'
-                  }}
-                >
-                  Votre torréfacteur artisanal depuis 2025. 
-                  Découvrez nos cafés d'exception, 
-                  sélectionnés avec passion pour vous offrir 
-                  une expérience gustative unique.
-                </Typography>
-              </Box>
-            </Grid>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            <Box sx={{ flex: 1, minWidth: '250px' }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '1.2rem',
+                  color: '#D4AF37',
+                  letterSpacing: '0.1em',
+                  mb: 2
+                }}
+              >
+                PAYE TON KAWA
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: '0.9rem',
+                  lineHeight: 1.6,
+                  color: '#CCCCCC'
+                }}
+              >
+                Votre torréfacteur artisanal depuis 2025.
+                Découvrez nos cafés d&apos;exception,
+                sélectionnés avec passion pour vous offrir
+                une expérience gustative unique.
+              </Typography>
+            </Box>
 
-            <Grid item xs={12} sm={6} md={2}>
+            <Box sx={{ flex: 1, minWidth: '150px' }}>
               <Typography
                 variant="h6"
                 sx={{
@@ -93,9 +82,9 @@ export default function Footer() {
                   </Typography>
                 </Link>
               </Box>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ flex: 1, minWidth: '150px' }}>
               <Typography
                 variant="h6"
                 sx={{
@@ -126,9 +115,9 @@ export default function Footer() {
                   </Typography>
                 </Link>
               </Box>
-            </Grid>
+            </Box>
 
-            <Grid item xs={12} md={3}>
+            <Box sx={{ flex: 1, minWidth: '200px' }}>
               <Typography
                 variant="h6"
                 sx={{
@@ -161,8 +150,8 @@ export default function Footer() {
                   </Typography>
                 </Box>
               </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
