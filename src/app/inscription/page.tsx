@@ -11,42 +11,41 @@ import {
   CircularProgress
 } from '@mui/material';
 import Link from 'next/link';
-import { verifyJwtToken } from '@/lib/auth';
 
-export default function LoginPage() {
+export default function InscriptionPage() {
   const [pseudo, setPseudo] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
+  const [roleId] = useState(2); // Client = 2, par convention
   const [loading, setLoading] = useState(false);
   const [erreur, setErreur] = useState('');
   const router = useRouter();
 
-  const handleConnexion = async (e: React.FormEvent) => {
+  const handleInscription = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setErreur('');
+    setLoading(true);
 
     try {
-      const res = await fetch('/api/clients/verifier', {
+      const res = await fetch('/api/clients/ajouter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pseudo, motDePasse })
+        body: JSON.stringify({
+          pseudo,
+          motDePasse,
+          roleId
+        })
       });
-
-      if (!res.ok) throw new Error('Erreur serveur');
 
       const data = await res.json();
 
-      if (data?.success === true) {
-        const payload = await verifyJwtToken(data.token);
-        console.log('Payload JWT vérifié:', payload);
-
-        localStorage.setItem('token', data.token);
-        router.push('/');
-      } else {
-        setErreur('Identifiants incorrects.');
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || 'Erreur lors de l’inscription');
       }
-    } catch {
-      setErreur('Une erreur est survenue.');
+
+      // Redirige vers la page de connexion
+      router.push('/connexion');
+    } catch (err: any) {
+      setErreur(err.message || 'Erreur serveur');
     } finally {
       setLoading(false);
     }
@@ -63,10 +62,10 @@ export default function LoginPage() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Connexion
+          Inscription
         </Typography>
 
-        <Box component="form" onSubmit={handleConnexion} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleInscription} sx={{ mt: 2 }}>
           <TextField
             label="Pseudo"
             fullWidth
@@ -98,13 +97,13 @@ export default function LoginPage() {
             sx={{ mt: 3 }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} /> : 'Se connecter'}
+            {loading ? <CircularProgress size={24} /> : 'Créer mon compte'}
           </Button>
 
           <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-            Pas encore de compte ?{' '}
-            <Link href="/inscription" style={{ textDecoration: 'underline' }}>
-              Inscrivez-vous
+            Déjà un compte ?{' '}
+            <Link href="/connexion" style={{ textDecoration: 'underline' }}>
+              Connectez-vous
             </Link>
           </Typography>
         </Box>

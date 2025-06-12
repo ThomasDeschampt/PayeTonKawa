@@ -10,6 +10,7 @@ function getJwtSecretKey() {
 interface CustomJwtPayload extends JWTPayload {
   id: string;
   pseudo: string;
+  role: string;
 }
 
 export async function verifyJwtToken(token: string): Promise<CustomJwtPayload | undefined> {

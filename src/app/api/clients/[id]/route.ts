@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SERVICE_URL = process.env.NEXT_PUBLIC_API_PRODUITS;
+const SERVICE_URL = process.env.NEXT_PUBLIC_API_CLIENTS;
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const authHeader = req.headers.get('authorization') || '';
     const { id } = await params;
-    const res = await fetch(`${SERVICE_URL}/api/produits/afficher/${id}`, {
+    const res = await fetch(`${SERVICE_URL}/api/clients/afficher/${id}`, {
       headers: { Authorization: authHeader }
     });
     if (!res.ok) {
@@ -27,7 +27,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const { id } = params;
     const body = await req.json();
 
-    const res = await fetch(`${SERVICE_URL}/api/produits/modifier/${id}`, {
+    const res = await fetch(`${SERVICE_URL}/api/clients/modifier/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     const authHeader = req.headers.get('authorization') || '';
     const { id } = params;
 
-    const res = await fetch(`${SERVICE_URL}/api/produits/supprimer/${id}`, {
+    const res = await fetch(`${SERVICE_URL}/api/clients/supprimer/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: authHeader

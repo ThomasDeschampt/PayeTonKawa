@@ -15,9 +15,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import Link from 'next/link';
 import { usePanier } from '@/hooks/usePanier';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Header() {
   const { totalArticles } = usePanier();
+  const { user } = useAuth();
   const logo = '/paye-ton-kawa-logo.png';
 
   return (
@@ -42,17 +44,28 @@ export default function Header() {
             }}
           >
             <Box sx={{ display: 'flex', gap: 3 }}>
-              <Link href="/conseils" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px'}}>
+              <Link href="/conseils" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <InfoIcon sx={{ fontSize: 16 }} />
                 NOS CONSEILS
               </Link>
             </Box>
 
             <Box sx={{ display: 'flex', gap: 3 }}>
-              <Link href="/mon-compte" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <AccountCircle sx={{ fontSize: 16 }} />
-                MON COMPTE
-              </Link>
+              {user ? (
+                <Link href="/compte" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <AccountCircle sx={{ fontSize: 16 }} />
+                  MON COMPTE
+                </Link>
+              ) : (
+                <>
+                  <Link href="/connexion" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    CONNEXION
+                  </Link>
+                  <Link href="/inscription" style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    INSCRIPTION
+                  </Link>
+                </>
+              )}
             </Box>
           </Box>
         </Container>
@@ -76,7 +89,6 @@ export default function Header() {
               px: { xs: 2, sm: 0 }
             }}
           >
-
             <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
               <Box component="img" src={logo} alt="Logo Paye Ton Kawa" sx={{ height: 60, width: 'auto' }} />
             </Link>

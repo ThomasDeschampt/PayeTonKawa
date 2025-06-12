@@ -1,9 +1,17 @@
 'use client';
 
 import { usePanier } from '@/hooks/usePanier';
-import { Box, Typography, List, ListItem, IconButton, Paper, Divider, Button } from '@mui/material';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import {
+  Box, Typography, List, ListItem, IconButton,
+  Paper, Divider, Button, RadioGroup, FormControlLabel,
+  Radio, FormHelperText, FormControl, FormLabel
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
+import Cookies from 'universal-cookie';
 
 const DEFAULT_IMAGE = '/test.jpg';
 
@@ -18,10 +26,56 @@ const StyledImage = styled('img')({
 
 export default function PanierPage() {
   const { panier, retirerProduit, viderPanier, isReady } = usePanier();
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
-  if (!isReady) return <Typography>Chargement du panier...</Typography>;
+  const [modePaiement, setModePaiement] = useState('');
+  const [erreurModePaiement, setErreurModePaiement] = useState('');
+
+  if (!isReady || loading) return <Typography>Chargement...</Typography>;
 
   const total = panier.reduce((acc, produit) => acc + produit.prix * (produit.quantity || 1), 0);
+
+  const validerCommande = async () => {
+    if (!user) {
+      router.push('/connexion');
+      return;
+    }
+    if (!modePaiement) {
+      setErreurModePaiement('Veuillez choisir un mode de paiement.');
+      return;
+    }
+    setErreurModePaiement('');
+
+    const cookies = new Cookies();
+    const token = cookies.get('token');
+    try {
+      const res = await fetch('/api/commandes/ajouter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          produits: panier.map(p => ({
+            uuid_produit: p.id,
+            quantite: p.quantity || 1,
+          })),
+          mode_paiement: modePaiement,
+          statut: 'en attente',
+          uuid_client: user.id,
+        }),        
+      });
+
+      if (!res.ok) throw new Error('Erreur lors de la commande');
+
+      viderPanier();
+      router.push('/confirmation');
+    } catch (err) {
+      console.error(err);
+      alert('Une erreur est survenue lors de la commande.');
+    }
+  };
 
   return (
     <Box sx={{ p: { xs: 2, md: 6 }, maxWidth: 1200, mx: 'auto' }}>
@@ -64,13 +118,36 @@ export default function PanierPage() {
             })}
           </List>
 
+          <Box sx={{ mt: 3 }}>
+            <FormControl component="fieldset" error={!!erreurModePaiement}>
+              <FormLabel component="legend" sx={{ mb: 1 }}>
+                Mode de paiement
+              </FormLabel>
+              <RadioGroup
+                value={modePaiement}
+                onChange={(e) => setModePaiement(e.target.value)}
+                row
+              >
+                <FormControlLabel value="cb" control={<Radio />} label="Carte bancaire" />
+                <FormControlLabel value="paypal" control={<Radio />} label="Paypal" />
+                <FormControlLabel value="virement" control={<Radio />} label="Virement bancaire" />
+              </RadioGroup>
+              {!!erreurModePaiement && (
+                <FormHelperText>{erreurModePaiement}</FormHelperText>
+              )}
+            </FormControl>
+          </Box>
+
           <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6">
-              Total: {total.toFixed(2)} €
-            </Typography>
-            <Button variant="contained" color="error" onClick={viderPanier}>
-              Vider le panier
-            </Button>
+            <Typography variant="h6">Total: {total.toFixed(2)} €</Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button variant="contained" color="error" onClick={viderPanier}>
+                Vider le panier
+              </Button>
+              <Button variant="contained" color="primary" onClick={validerCommande}>
+                Valider la commande
+              </Button>
+            </Box>
           </Box>
         </Paper>
       )}
