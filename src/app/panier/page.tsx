@@ -58,12 +58,13 @@ export default function PanierPage() {
         },
         body: JSON.stringify({
           produits: panier.map(p => ({
-            uuid_produit: p.id,
+            id_prod: p.id,
             quantite: p.quantity || 1,
           })),
           mode_paiement: modePaiement,
           statut: 'en attente',
-          uuid_client: user.id,
+          uuid: user.id,
+          montant: total,
         }),        
       });
 

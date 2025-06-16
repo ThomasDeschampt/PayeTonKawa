@@ -115,7 +115,7 @@ export default function Header() {
                   fontStyle: 'italic'
                 }}
               >
-                Depuis 2025
+                Depuis 2018
               </Typography>
             </Box>
 
