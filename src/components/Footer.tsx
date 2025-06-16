@@ -177,7 +177,7 @@ export default function Footer() {
             }}
           >
             <Typography sx={{ fontSize: '0.8rem' }}>
-              © 2018 Paye Ton Kawa. Tous droits réservés.
+              © 2025 Paye Ton Kawa. Tous droits réservés.
             </Typography>
             <Typography sx={{ fontSize: '0.8rem', color: '#D4AF37' }}>
               Torréfacteur artisanal depuis 2018
