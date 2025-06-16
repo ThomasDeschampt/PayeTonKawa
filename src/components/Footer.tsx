@@ -45,7 +45,7 @@ export default function Footer() {
                   color: '#CCCCCC'
                 }}
               >
-                Votre torréfacteur artisanal depuis 2025.
+                Votre torréfacteur artisanal depuis 2018.
                 Découvrez nos cafés d&apos;exception,
                 sélectionnés avec passion pour vous offrir
                 une expérience gustative unique.
@@ -177,10 +177,10 @@ export default function Footer() {
             }}
           >
             <Typography sx={{ fontSize: '0.8rem' }}>
-              © 2025 Paye Ton Kawa. Tous droits réservés.
+              © 2018 Paye Ton Kawa. Tous droits réservés.
             </Typography>
             <Typography sx={{ fontSize: '0.8rem', color: '#D4AF37' }}>
-              Torréfacteur artisanal depuis 2025
+              Torréfacteur artisanal depuis 2018
             </Typography>
           </Box>
         </Container>
