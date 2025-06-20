@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage } from '@react-three/drei';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -66,7 +67,7 @@ export default function HomePage() {
                 transition={{ delay: 0.7, duration: 0.6 }}
                 style={{ marginTop: 32 }}
               >
-                <a href="#valeurs" style={{ textDecoration: 'none' }}>
+                <Link href="/produits" style={{ textDecoration: 'none' }}>
                   <Box
                     sx={{
                       mt: 2,
@@ -90,7 +91,7 @@ export default function HomePage() {
                   >
                     Découvrir nos cafés
                   </Box>
-                </a>
+                </Link>
               </motion.div>
             </Box>
           </Box>

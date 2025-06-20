@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import {
   Box, Typography, List, ListItem, IconButton,
   Paper, Divider, Button, RadioGroup, FormControlLabel,
-  Radio, FormHelperText, FormControl, FormLabel
+  Radio, FormHelperText, FormControl, FormLabel, TextField
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
@@ -32,6 +32,11 @@ export default function PanierPage() {
   const [modePaiement, setModePaiement] = useState('');
   const [erreurModePaiement, setErreurModePaiement] = useState('');
 
+  const [adresse, setAdresse] = useState('');
+  const [codePostal, setCodePostal] = useState('');
+  const [complement, setComplement] = useState('');
+  const [erreurAdresse, setErreurAdresse] = useState('');
+
   if (!isReady || loading) return <Typography>Chargement...</Typography>;
 
   const total = panier.reduce((acc, produit) => acc + produit.prix * (produit.quantity || 1), 0);
@@ -41,15 +46,45 @@ export default function PanierPage() {
       router.push('/connexion');
       return;
     }
+  
     if (!modePaiement) {
       setErreurModePaiement('Veuillez choisir un mode de paiement.');
       return;
     }
+  
+    if (!adresse || !codePostal) {
+      setErreurAdresse("L'adresse et le code postal sont obligatoires.");
+      return;
+    }
+  
     setErreurModePaiement('');
-
+    setErreurAdresse('');
+  
     const cookies = new Cookies();
     const token = cookies.get('token');
+  
     try {
+      // Étape 1 : Mettre à jour l'adresse du client
+      const updateClientRes = await fetch(`/api/clients/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          addresses: [
+            {
+              adresse,
+              codePostal: parseInt(codePostal),
+              complement: complement || null,
+            },
+          ],
+        }),
+      });
+  
+      if (!updateClientRes.ok) throw new Error("Erreur lors de la mise à jour de l'adresse");
+  
+      // Étape 2 : Créer la commande
       const res = await fetch('/api/commandes/ajouter', {
         method: 'POST',
         headers: {
@@ -65,11 +100,11 @@ export default function PanierPage() {
           statut: 'en attente',
           uuid: user.id,
           montant: total,
-        }),        
+        }),
       });
-
+  
       if (!res.ok) throw new Error('Erreur lors de la commande');
-
+  
       viderPanier();
       router.push('/confirmation');
     } catch (err) {
@@ -77,6 +112,7 @@ export default function PanierPage() {
       alert('Une erreur est survenue lors de la commande.');
     }
   };
+  
 
   return (
     <Box sx={{ p: { xs: 2, md: 6 }, maxWidth: 1200, mx: 'auto' }}>
@@ -118,6 +154,40 @@ export default function PanierPage() {
               );
             })}
           </List>
+
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h6" gutterBottom>Adresse de livraison</Typography>
+
+            <TextField
+              label="Adresse"
+              value={adresse}
+              onChange={(e) => setAdresse(e.target.value)}
+              fullWidth
+              required
+              error={!!erreurAdresse && !adresse}
+              helperText={!adresse ? erreurAdresse : ''}
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              label="Code Postal"
+              type="number"
+              value={codePostal}
+              onChange={(e) => setCodePostal(e.target.value)}
+              fullWidth
+              required
+              error={!!erreurAdresse && !codePostal}
+              helperText={!codePostal ? erreurAdresse : ''}
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              label="Complément (optionnel)"
+              value={complement}
+              onChange={(e) => setComplement(e.target.value)}
+              fullWidth
+            />
+          </Box>
 
           <Box sx={{ mt: 3 }}>
             <FormControl component="fieldset" error={!!erreurModePaiement}>

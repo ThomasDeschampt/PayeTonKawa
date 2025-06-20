@@ -71,7 +71,7 @@ export default function Footer() {
                     Nos conseils
                   </Typography>
                 </Link>
-                <Link href="/mon-compte" style={{ color: '#CCCCCC', textDecoration: 'none' }}>
+                <Link href="/compte" style={{ color: '#CCCCCC', textDecoration: 'none' }}>
                   <Typography sx={{ fontSize: '0.9rem', '&:hover': { color: '#D4AF37' } }}>
                     Mon compte
                   </Typography>

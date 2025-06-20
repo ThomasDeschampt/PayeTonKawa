@@ -13,6 +13,8 @@ import {
 import { Client, Commande, ProduitCommande, Produit } from '@/lib/types';
 import Cookies from 'universal-cookie';
 import Link from 'next/link';
+import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
+import { useRouter } from 'next/navigation';
 
 export default function MonCompte() {
   const { user, loading } = useAuth();
@@ -20,6 +22,8 @@ export default function MonCompte() {
   const [lastCommande, setLastCommande] = useState<Commande | null>(null);
   const [produitsDetails, setProduitsDetails] = useState<Produit[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const router = useRouter();
 
   const cookies = new Cookies();
   const token = cookies.get('token');
@@ -86,6 +90,33 @@ export default function MonCompte() {
     fetchClient();
     fetchLastCommandeWithProduits();
   }, [user]);
+
+  const handleDeleteAccount = async () => {
+    try {
+      const res = await fetch(`/api/clients/${user!.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+  
+      if (data.success) {
+        alert('Compte supprimé avec succès.');
+        const cookies = new Cookies();
+        cookies.remove('token', { path: '/' });
+        router.push('/');
+      } else {
+        alert('Erreur lors de la suppression : ' + (data.message || 'Erreur inconnue'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Erreur lors de la suppression du compte.');
+    } finally {
+      setConfirmOpen(false);
+    }
+  };
+  
 
   if (loading) return <CircularProgress />;
   if (!user) return <Typography>Veuillez vous connecter.</Typography>;
@@ -154,6 +185,23 @@ export default function MonCompte() {
           </Link>
         </Box>
       </Box>
+      <Box sx={{ mt: 6, textAlign: 'center' }}>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() => setConfirmOpen(true)}
+        >
+          Supprimer mon compte
+        </Button>
+      </Box>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Confirmation de suppression"
+        description="Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+        onConfirm={handleDeleteAccount}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </Container>
   );
 }

@@ -66,7 +66,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ success: false, message: text }, { status: res.status });
     }
 
-    return NextResponse.json({ success: true, message: 'Produit supprimé' });
+    return NextResponse.json({ success: true, message: 'Compte supprimé' });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Erreur interne', error: (error as Error).message }, { status: 500 });
   }

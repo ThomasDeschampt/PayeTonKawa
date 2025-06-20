@@ -128,7 +128,7 @@ export default function ToutesCommandes() {
 
       <Divider sx={{ my: 4 }} />
 
-      <Link href="/mon-compte" passHref>
+      <Link href="/compte" passHref>
         <Button variant="outlined">Retour à mon compte</Button>
       </Link>
     </Container>

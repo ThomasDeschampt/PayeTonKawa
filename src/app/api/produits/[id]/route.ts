@@ -21,10 +21,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const authHeader = req.headers.get('authorization') || '';
-    const { id } = params;
+    const params = await context.params;
+    const id = params.id;
     const body = await req.json();
 
     const res = await fetch(`${SERVICE_URL}/api/produits/modifier/${id}`, {
