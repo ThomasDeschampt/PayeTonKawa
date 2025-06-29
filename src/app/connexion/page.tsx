@@ -41,7 +41,7 @@ export default function LoginPage() {
         console.log('Payload JWT vérifié:', payload);
 
         localStorage.setItem('token', data.token);
-        router.push('/');
+        window.location.href = '/';
       } else {
         setErreur('Identifiants incorrects.');
       }

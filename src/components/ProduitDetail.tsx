@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
-import { usePanier } from '@/hooks/usePanier';
+import { usePanier } from '@/context/PanierContext';
 
 const DEFAULT_IMAGE = '/test.jpg';
 

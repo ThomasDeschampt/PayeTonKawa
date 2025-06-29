@@ -18,18 +18,19 @@ import SearchIcon from '@mui/icons-material/Search';
 import InfoIcon from '@mui/icons-material/Info';
 import Link from 'next/link';
 import { useState } from 'react';
-import { usePanier } from '@/hooks/usePanier';
+import { usePanier } from '@/context/PanierContext';
 import { useAuth } from '@/hooks/useAuth';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import FaceIcon from '@mui/icons-material/Face';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 export default function Header() {
-  const { totalArticles } = usePanier();
   const { user, logout } = useAuth();
   const logo = '/paye-ton-kawa-logo.png';
 
+  const { totalArticles } = usePanier();
+  const hasItems = totalArticles > 0;
+  
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -209,12 +210,18 @@ export default function Header() {
                 <IconButton
                   aria-label="Panier"
                   sx={{
-                    color: '#2E2E2E',
-                    '&:hover': { color: '#D4AF37' },
+                    color: hasItems ? '#D4AF37' : '#2E2E2E',
+                    backgroundColor: hasItems ? '#2E2E2E' : 'transparent',
+                    '&:hover': {
+                      color: '#fff',
+                      backgroundColor: '#D4AF37',
+                    },
+                    transition: 'all 0.3s ease',
                   }}
                 >
                   <Badge
                     badgeContent={totalArticles}
+                    invisible={!hasItems}
                     color="error"
                     sx={{
                       '& .MuiBadge-badge': {
@@ -225,7 +232,11 @@ export default function Header() {
                       },
                     }}
                   >
-                    <ShoppingCartIcon sx={{ fontSize: 24 }} />
+                    {hasItems ? (
+                      <ShoppingCartCheckoutIcon sx={{ fontSize: 24 }} />
+                    ) : (
+                      <ShoppingCartIcon sx={{ fontSize: 24 }} />
+                    )}
                   </Badge>
                 </IconButton>
               </Link>

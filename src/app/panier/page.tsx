@@ -1,6 +1,6 @@
 'use client';
 
-import { usePanier } from '@/hooks/usePanier';
+import { usePanier } from '@/context/PanierContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ const StyledImage = styled('img')({
 });
 
 export default function PanierPage() {
-  const { panier, retirerProduit, viderPanier, isReady } = usePanier();
+  const { panier, retirerProduit, viderPanier, modifierQuantite, isReady } = usePanier();
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -144,15 +144,51 @@ export default function PanierPage() {
                       </IconButton>
                     }
                   >
-                    <Typography sx={{ flexGrow: 1 }}>
-                      {produit.nom} x {produit.quantity || 1}
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography>{produit.nom}</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() =>
+                            modifierQuantite(produit.id, (produit.quantity || 1) - 1)
+                          }
+                          disabled={(produit.quantity || 1) <= 1}
+                          sx={{ minWidth: 32, px: 0 }}
+                        >
+                          –
+                        </Button>
+                        <TextField
+                          type="number"
+                          value={produit.quantity || 1}
+                          onChange={(e) =>
+                            modifierQuantite(produit.id, Math.max(1, parseInt(e.target.value) || 1))
+                          }
+                          inputProps={{ min: 1, style: { textAlign: 'center' } }}
+                          size="small"
+                          sx={{ width: 60, mx: 1 }}
+                        />
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() =>
+                            modifierQuantite(produit.id, (produit.quantity || 1) + 1)
+                          }
+                          sx={{ minWidth: 32, px: 0 }}
+                        >
+                          +
+                        </Button>
+                      </Box>
+                    </Box>
+                    <Typography>
+                      {(produit.prix * (produit.quantity || 1)).toFixed(2)} €
                     </Typography>
-                    <Typography>{(produit.prix * (produit.quantity || 1)).toFixed(2)} €</Typography>
                   </ListItem>
                   <Divider />
                 </Box>
               );
             })}
+
           </List>
 
           <Box sx={{ mt: 3 }}>
