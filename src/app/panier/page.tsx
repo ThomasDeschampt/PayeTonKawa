@@ -64,7 +64,6 @@ export default function PanierPage() {
     const token = cookies.get('token');
   
     try {
-      // Étape 1 : Mettre à jour l'adresse du client
       const updateClientRes = await fetch(`/api/clients/${user.id}`, {
         method: 'PUT',
         headers: {
@@ -84,7 +83,6 @@ export default function PanierPage() {
   
       if (!updateClientRes.ok) throw new Error("Erreur lors de la mise à jour de l'adresse");
   
-      // Étape 2 : Créer la commande
       const res = await fetch('/api/commandes/ajouter', {
         method: 'POST',
         headers: {

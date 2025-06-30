@@ -15,6 +15,7 @@ import Cookies from 'universal-cookie';
 import Link from 'next/link';
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog';
 import { useRouter } from 'next/navigation';
+import EditUserDialog, { User } from '@/components/dialogs/EditUserDialog';
 
 export default function MonCompte() {
   const { user, loading } = useAuth();
@@ -23,6 +24,7 @@ export default function MonCompte() {
   const [produitsDetails, setProduitsDetails] = useState<Produit[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const router = useRouter();
 
   const cookies = new Cookies();
@@ -91,6 +93,31 @@ export default function MonCompte() {
     fetchLastCommandeWithProduits();
   }, [user]);
 
+  const handleUpdateUser = async (updatedUser: User) => {
+    try {
+      const res = await fetch(`/api/clients/${updatedUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!res.ok) {
+        const error = await res.text();
+        alert('Erreur lors de la mise à jour : ' + error);
+        return;
+      }
+
+      const data = await res.json();
+      setClient(data.data);
+      setEditOpen(false);
+    } catch (err) {
+      alert('Erreur de mise à jour');
+    }
+  };
+
   const handleDeleteAccount = async () => {
     try {
       const res = await fetch(`/api/clients/${user!.id}`, {
@@ -100,10 +127,9 @@ export default function MonCompte() {
         },
       });
       const data = await res.json();
-  
+
       if (data.success) {
         alert('Compte supprimé avec succès.');
-        const cookies = new Cookies();
         cookies.remove('token', { path: '/' });
         router.push('/');
       } else {
@@ -116,7 +142,6 @@ export default function MonCompte() {
       setConfirmOpen(false);
     }
   };
-  
 
   if (loading) return <CircularProgress />;
   if (!user) return <Typography>Veuillez vous connecter.</Typography>;
@@ -139,6 +164,15 @@ export default function MonCompte() {
         <Typography>
           Créé le : {new Date(client.createdAt).toLocaleDateString()}
         </Typography>
+        <Box sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setEditOpen(true)}
+          >
+            Modifier mes informations
+          </Button>
+        </Box>
       </Box>
 
       <Divider sx={{ mb: 4 }} />
@@ -185,6 +219,7 @@ export default function MonCompte() {
           </Link>
         </Box>
       </Box>
+
       <Box sx={{ mt: 6, textAlign: 'center' }}>
         <Button
           variant="outlined"
@@ -194,6 +229,15 @@ export default function MonCompte() {
           Supprimer mon compte
         </Button>
       </Box>
+
+      {/* Dialog d’édition du profil */}
+      {editOpen && client && (
+        <EditUserDialog
+          user={client}
+          onClose={() => setEditOpen(false)}
+          onSave={handleUpdateUser}
+        />
+      )}
 
       <ConfirmDialog
         open={confirmOpen}

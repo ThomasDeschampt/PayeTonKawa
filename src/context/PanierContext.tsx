@@ -28,7 +28,6 @@ export const PanierProvider = ({ children }: { children: React.ReactNode }) => {
   const [panier, setPanier] = useState<Produit[]>([]);
   const [isReady, setIsReady] = useState(false);
 
-  // Charger le panier depuis localStorage au montage
   useEffect(() => {
     const stored = localStorage.getItem(PANIER_KEY);
     if (stored) {
@@ -37,7 +36,6 @@ export const PanierProvider = ({ children }: { children: React.ReactNode }) => {
     setIsReady(true);
   }, []);
 
-  // Sauvegarder dans localStorage quand panier change, uniquement si prêt
   useEffect(() => {
     if (isReady) {
       localStorage.setItem(PANIER_KEY, JSON.stringify(panier));
@@ -62,7 +60,6 @@ export const PanierProvider = ({ children }: { children: React.ReactNode }) => {
 
   const viderPanier = () => setPanier([]);
 
-  // Modifier la quantité d’un produit (supprime si quantity <= 0)
   const modifierQuantite = (id: string, quantity: number) => {
     setPanier((prev) => {
       if (quantity <= 0) {
